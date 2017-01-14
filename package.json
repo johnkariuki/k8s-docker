@@ -1,0 +1,19 @@
+{
+  "name": "hello-gcp-docker",
+  "version": "1.0.0",
+  "description": "Deploy nodeJS Hello world in docker to GCP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "gcp",
+    "k8s"
+  ],
+  "author": "John Kariuki (https://github.com/johnkariuki)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

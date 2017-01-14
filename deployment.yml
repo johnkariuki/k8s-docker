@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {DEPLOYMENT_NAME}
+  labels:
+    app: {PROJECT_ID}
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: {PROJECT_ID}
+    spec:
+      containers:
+        - name: decks-cont
+          image: gcr.io/{PROJECT_ID}/{IMAGE_NAME}:{TAG}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8000
