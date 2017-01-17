@@ -14,6 +14,10 @@ app.get('/bar', (req, res) => {
   res.status(200).json('welcome to bar');
 });
 
+app.get('/baz', (req, res) => {
+  res.status(200).json('Baz!');
+});
+
 app.listen(port, () => console.log('Magic happens on port', port));
 
 module.exports.app = app;
