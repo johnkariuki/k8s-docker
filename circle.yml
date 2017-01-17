@@ -1,3 +1,41 @@
+machine:
+  environment:
+    PROJECT_ID: scotch-155622
+    CLUSTER_NAME: scotch-cluster
+    COMPUTE_ZONE: us-central1-a
+    DEPLOYMENT_NAME: scotch-dep
+
 test:
     override:
     - mocha
+
+#Ensure that gcloud and kubectl are updated.
+dependencies:
+  pre:
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
+
+deployment:
+    production:
+        branch: master
+        commands:
+        # Decode the Service Account
+        - echo $SERIVCE_ACCOUNT | base64 --decode -i > ${HOME}/gcloud-service-key.json
+        # Authenticate CircleCI with the service account file
+        - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+        # Set the default project
+        - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_ID
+        # Set the default container
+        - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
+        # Set the compute zone
+        - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone $COMPUTE_ZONE
+        # Get the cluster credentials.
+        - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+        # Start good old Docker
+        - sudo service docker start
+        # Build a docker image and use the Github commit hash ($CIRCLE_SHA1) as the tag
+        - docker build -t gcr.io/${PROJECT_ID}/node-app:$CIRCLE_SHA1 .
+        # Push the Image to the GCP Container Registry
+        - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push gcr.io/${PROJECT_ID}/node-app:$CIRCLE_SHA1
+        # Set the
+        - sudo /opt/google-cloud-sdk/bin/kubectl set image deployment/{$DEPLOYMENT_NAME} ${PROJECT_ID}=gcr.io/${PROJECT_ID}/node-app:$CIRCLE_SHA1
