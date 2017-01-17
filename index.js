@@ -1,3 +1,4 @@
+// Create application instance
 const app = require('express')();
 
 const port = process.env.PORT || 8000;
@@ -18,6 +19,7 @@ app.get('/baz', (req, res) => {
   res.status(200).json('Baz!');
 });
 
+//Start server
 app.listen(port, () => console.log('Magic happens on port', port));
 
 module.exports.app = app;
