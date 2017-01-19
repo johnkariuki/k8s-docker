@@ -14,8 +14,8 @@
   "author": "John Kariuki (https://github.com/johnkariuki)",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.15.3",
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "needle": "^1.4.3"
   },
   "devDependencies": {
     "mocha": "^3.2.0",

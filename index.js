@@ -1,6 +1,6 @@
 // Create application instance
 const app = require('express')();
-const axios = require('axios');
+const needle = require('needle');
 
 const port = process.env.PORT || 8000;
 
@@ -22,10 +22,12 @@ app.get('/baz', (req, res) => {
 
 //Get your Instagram profile
 app.get('/my_ig', (req, res) => {
-  axios
-    .get('https://api.instagram.com/v1/users/self/?access_token=' + process.env.IG_ACCESS_TOKEN)
-    .then(response => res.status(200).json(response))
-    .catch((error) => res.status(500).json({ 'message': error}));
+  needle
+    .get('https://api.instagram.com/v1/users/self/?access_token=' + process.env.IG_ACCESS_TOKEN,
+    (err, response, data) => {
+      res.status(200).json(data);
+    })
+
 });
 
 //Start server
