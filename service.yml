@@ -1,10 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {SERVICE_NAME}
+  #Service name
+  name: node-app-svc
 spec:
   selector:
-    app: {PROJECT_ID}
+    app: scotch-155622
   ports:
     - protocol: TCP
       port: 8000
