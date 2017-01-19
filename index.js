@@ -1,5 +1,6 @@
 // Create application instance
 const app = require('express')();
+const axios = require('axios');
 
 const port = process.env.PORT || 8000;
 
@@ -19,12 +20,12 @@ app.get('/baz', (req, res) => {
   res.status(200).json('Baz!');
 });
 
-app.get('/foot', (req, res) => {
-  res.status(200).json('Some data', process.env.USERNAME, process.env.PASSWORD);
-  console.log('Updated');
-  console.log('Env', process.env);
-  console.log('Username', process.env.USERNAME);
-  console.log('Password', process.env.PASSWORD);
+//Get your Instagram profile
+app.get('/my_ig', (req, res) => {
+  axios
+    .get('https://api.instagram.com/v1/users/self/?access_token=' + process.env.IG_ACCESS_TOKEN)
+    .then(response => res.status(200).json(response))
+    .catch((error) => res.status(500).json({ 'message': error}));
 });
 
 //Start server
