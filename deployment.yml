@@ -21,6 +21,7 @@ spec:
           #Ports to expose
           ports:
           - containerPort: 8000
+          
           env:
           # Name of the environment variable as will be in the Pod
             - name: IG_ACCESS_TOKEN
@@ -30,3 +31,13 @@ spec:
                     name: scotch-secret
                     # key of the value stored in the secret
                     key: access_token
+          livenessProbe:
+              httpGet:
+                  path: /health_check
+                  port: 8000
+              # Delay the first probe by 15 seconds
+              initialDelaySeconds: 15
+              # Probe the server every 5 seconds
+              periodSeconds: 10
+              # Timeout with error after one second if no response is given
+              timeoutSeconds: 1

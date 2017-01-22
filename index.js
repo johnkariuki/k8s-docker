@@ -30,6 +30,9 @@ app.get('/my_ig', (req, res) => {
 
 });
 
+// Return 200 if everything is working fine. 
+app.get('/health_check', (req, res) => res.status(200).json('ok!'));
+
 //Start server
 app.listen(port, () => console.log('Magic happens on port', port));
 
